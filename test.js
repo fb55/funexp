@@ -1,9 +1,9 @@
 var assert = require("assert"),
     FunExp = require("./");
 
-function assertRegExp(re, str){
-	
+var failed = false;
 
+function assertRegExp(re, str){
 	var flags = "";
 	if(re.global)     flags += "g";
 	if(re.ignoreCase) flags += "i";
@@ -14,9 +14,10 @@ function assertRegExp(re, str){
 	var original = re.exec(str),
 	    funny = fun.exec(str);
 
-	console.log(original, funny, re.toString());
-
-	assert.deepEqual(original, funny, "should be equal: '" + re.source + "' for '" + str + "'");
+	try{assert.deepEqual(original, funny);}
+	catch(e){
+		console.log("Error %s: %j != %j for %j", re.toString(), original, funny, str);
+	}
 }
 
 //Taken from https://github.com/jviereck/regexp.js/ (licensed under BSD)
@@ -113,3 +114,5 @@ assertRegExp(new RegExp('[' + a + '-' + o + ']', 'i'), y);  // /[Α-Ω]/i
 // Parsing of non closing brackets (not defined in standard?)
 assertRegExp(/]/, ']');
 assertRegExp(/}/, '}');
+
+if(failed) process.exit(1);
