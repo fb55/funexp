@@ -1,7 +1,7 @@
 var assert = require("assert"),
     FunExp = require("./");
 
-var failed = false;
+var failed = 0;
 
 function assertRegExp(re, str){
 	var flags = "";
@@ -17,6 +17,7 @@ function assertRegExp(re, str){
 	try{assert.deepEqual(original, funny);}
 	catch(e){
 		console.log("Error %s: %j != %j for %j", re.toString(), original, funny, str);
+		failed++;
 	}
 }
 
@@ -115,4 +116,5 @@ assertRegExp(new RegExp('[' + a + '-' + o + ']', 'i'), y);  // /[Α-Ω]/i
 assertRegExp(/]/, ']');
 assertRegExp(/}/, '}');
 
+console.log("failed:", failed);
 if(failed) process.exit(1);
