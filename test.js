@@ -16,8 +16,7 @@ function assertRegExp(re, str){
 
 	try{assert.deepEqual(original, funny);}
 	catch(e){
-		console.log("Error %s: %j != %j for %j", re.toString(), original, funny, str);
-		failed++;
+		console.log("%d. Error %s: %j != %j for %j", ++failed, re.toString(), original, funny, str);
 	}
 }
 
