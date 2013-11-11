@@ -17,8 +17,8 @@ var t = isChar("\t"),
     }),
     S = invert(s),
     b = function(str, idx){
-		var a = idx > 0 && w(str.charAt(idx - 1)),
-		    b = idx < str.length && w(str.charAt(idx));
+		var a = idx > 0 && w(str, idx - 1),
+		    b = idx < str.length && w(str, idx);
 
 		return (a && !b) || (!a && b); //xor
     },
