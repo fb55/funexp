@@ -27,7 +27,13 @@ function FunExp(source, flags){
 	}
 
 	this._parsed = parse(source, this);
-	this._compiled = compile(this._parsed, this);
+	//encapsulate expression in a group which sets index 0
+	this._compiled = compile({
+		type: "group",
+		behavior: "normal",
+		matchIdx: 0,
+		disjunction: this._parsed
+	}, this);
 
 }
 
@@ -46,7 +52,7 @@ FunExp.prototype.test = function(str){
 };
 
 FunExp.prototype.exec = function(str){
-	var matches = {length: this._parsed.lastMatchIdx + 1, 0: "", lastIndex: 0};
+	var matches = {length: this._parsed.lastMatchIdx + 1};
 
 	var idx = this.lastIndex, result = null;
 
@@ -60,8 +66,6 @@ FunExp.prototype.exec = function(str){
 	}
 
 	if(result === null) return null;
-
-	result[0] = str.substring(idx, result.lastIndex);
 
 	result = Array.apply(null, result);
 	result.index = idx;
